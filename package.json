@@ -4,17 +4,25 @@
     "test": "tsc --noEmit",
     "build": "parcel build src/index.html --public-url ./",
     "start": "parcel src/index.html",
-    "format": "prettier --write src --no-semi"
+    "format": "prettier --write src"
+  },
+  "prettier": {
+    "semi": false
   },
   "author": "ghom",
   "license": "ISC",
   "dependencies": {
     "@ghom/booyah": "^1.2.1",
+    "howler": "^2.2.3",
     "pixi.js": "^7.2.4"
   },
   "devDependencies": {
+    "@parcel/transformer-js": "^2.9.3",
     "@parcel/transformer-sass": "^2.9.3",
+    "@types/howler": "^2.2.7",
     "parcel": "^2.9.3",
+    "path-browserify": "^1.0.1",
+    "process": "^0.11.10",
     "typescript": "^5.1.6"
   }
 }
