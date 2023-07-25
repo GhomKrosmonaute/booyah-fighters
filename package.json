@@ -3,12 +3,13 @@
   "scripts": {
     "test": "tsc --noEmit",
     "build": "parcel build src/index.html --public-url ./",
-    "start": "parcel src/index.html --open"
+    "start": "parcel src/index.html --open",
+    "format": "prettier --write src --no-semi"
   },
   "author": "ghom",
   "license": "ISC",
   "dependencies": {
-    "@ghom/booyah": "^1.1.1",
+    "@ghom/booyah": "^1.2.0",
     "pixi.js": "^7.2.4"
   },
   "devDependencies": {
