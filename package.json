@@ -9,7 +9,7 @@
   "author": "ghom",
   "license": "ISC",
   "dependencies": {
-    "@ghom/booyah": "^1.2.0",
+    "@ghom/booyah": "^1.2.1",
     "pixi.js": "^7.2.4"
   },
   "devDependencies": {
