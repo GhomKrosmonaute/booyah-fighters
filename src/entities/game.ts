@@ -1,5 +1,4 @@
 import * as chip from "@ghom/booyah/src/chip";
-
 import * as fight from "../pages/fight";
 import * as home from "../pages/home";
 
@@ -10,13 +9,22 @@ export const gamePages = {
 
 export type GamePage = keyof typeof gamePages;
 
-export interface GameEventNames extends chip.BaseCompositeEvents {}
+export interface GameEventNames extends chip.BaseCompositeEvents {
+  notification: [message: string, type: "info" | "error"];
+}
 
 export class Game extends chip.Composite<GameEventNames> {
   private _stateMachine!: chip.StateMachine;
 
-  changePage(page: GamePage) {
+  get defaultChildChipContext() {
+    return {
+      container: window.app.stage,
+    };
+  }
+
+  public changePage(page: GamePage) {
     this._stateMachine.changeState(page);
+    console.log("game changePage", page);
   }
 
   protected _onActivate() {
