@@ -3,7 +3,7 @@
   "scripts": {
     "test": "tsc --noEmit",
     "build": "parcel build src/index.html --public-url ./",
-    "start": "parcel src/index.html --open",
+    "start": "parcel src/index.html",
     "format": "prettier --write src --no-semi"
   },
   "author": "ghom",
