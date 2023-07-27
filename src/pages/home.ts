@@ -3,6 +3,12 @@ import * as pixiChip from "../entities/pixiChip"
 
 export class Home extends pixiChip.Container {
   protected _onActivate() {
+    const testSprite = new pixi.Sprite(
+      window.game.images["../../resources/images/test.jpg"],
+    )
+
+    this._container.addChild(testSprite)
+
     const fightButton = new pixi.Graphics()
       .beginFill(0x00ff00)
       .drawRect(0, 0, 100, 100)

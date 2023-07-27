@@ -9,6 +9,10 @@ declare global {
   }
 }
 
+declare interface ObjectConstructor {
+  keys<T>(object: T): (keyof T)[]
+}
+
 window.app = new pixi.Application({
   resizeTo: window,
 })

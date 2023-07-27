@@ -1,6 +1,12 @@
 import * as booyah from "@ghom/booyah"
 import * as howler from "howler"
 
-export class Sound extends booyah.ChipBase {}
+export abstract class Audio extends booyah.ChipBase {
+  constructor(public readonly source: string) {
+    super()
+  }
+}
 
-export class Music extends booyah.ChipBase {}
+export class Sound extends Audio {}
+
+export class Music extends Audio {}

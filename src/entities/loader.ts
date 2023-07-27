@@ -1,23 +1,24 @@
-import * as fs from "fs"
-import * as path from "path"
 import * as pixi from "pixi.js"
+import * as booyah from "@ghom/booyah"
 import * as pixiChip from "./pixiChip"
+import * as progressBar from "./progressBar"
 
-export interface LoaderOptions<Type> {
-  dir: string
-  transform: (path: string) => Type
-  onLoaded: (resources: Record<string, Type>) => void
+interface BaseRefinedResource {
+  name: string
 }
 
-export class Loader<Type> extends pixiChip.Container {
-  private _resources!: Record<string, Type>
+export interface LoaderOptions<Raw, Refined> {
+  source: readonly Raw[]
+  transform: (raw: Raw) => Promise<Refined> | Refined
+  onLoaded?: (resources: Refined[]) => void
+}
 
-  constructor(private _options: LoaderOptions<Type>) {
+export class Loader<Raw, Refined> extends pixiChip.Container {
+  private _resources!: Refined[]
+  private _progressBar!: progressBar.ProgressBar
+
+  constructor(private _options: LoaderOptions<Raw, Refined>) {
     super()
-  }
-
-  public get(name: string) {
-    return this._resources[name]
   }
 
   /**
@@ -26,20 +27,36 @@ export class Loader<Type> extends pixiChip.Container {
    *   - On loaded, terminate this entity
    */
   protected _onActivate() {
-    this._resources = {}
+    this._resources = []
 
-    // todo: add progress bar
-    // this._container.addChild()
+    this._progressBar = new progressBar.ProgressBar({
+      startValue: 0,
+      color: 0x00ff00,
+      width: 100,
+      position: {
+        x: window.screen.width / 2,
+        y: window.screen.height / 2,
+      },
+    })
 
-    const resources = fs.readdirSync(this._options.dir, "utf8")
+    this._activateChildChip(this._progressBar)
 
-    for (const file of resources) {
-      const name = path.filename(file)
-      this._resources[name] = this._options.transform(file)
-      console.log("loaded resource", name)
-      // todo: update progress bar
+    const load = async () => {
+      for (const raw of this._options.source) {
+        this._resources.push(await this._options.transform(raw))
+        this._progressBar.value +=
+          this._resources.length / this._options.source.length
+      }
     }
 
-    // todo: call onLoaded and terminate
+    load()
+      .then(() => {
+        this._options.onLoaded?.(this._resources)
+        this.terminate()
+      })
+      .catch((error: Error) => {
+        window.game.changePage("error")
+        throw error
+      })
   }
 }

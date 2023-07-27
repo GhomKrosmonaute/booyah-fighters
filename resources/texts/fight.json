@@ -1,0 +1,18 @@
+{
+  "fight": {
+    "fr": "Combat",
+    "en": "Fight"
+  },
+  "attack": {
+    "fr": "Attaque",
+    "en": "Attack"
+  },
+  "defense": {
+    "fr": "Défense",
+    "en": "Defense"
+  },
+  "speed": {
+    "fr": "Vitesse",
+    "en": "Speed"
+  }
+}
