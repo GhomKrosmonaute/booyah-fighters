@@ -31,10 +31,11 @@ export class Loader<Raw, Refined> extends pixiChip.Container {
 
     this._progressBar = new progressBar.ProgressBar({
       startValue: 0,
-      color: 0x00ff00,
+      color: 0x247afd,
       width: 100,
+      height: 10,
       position: {
-        x: window.screen.width / 2,
+        x: window.screen.width / 2 - 50,
         y: window.screen.height / 2,
       },
     })
@@ -44,7 +45,7 @@ export class Loader<Raw, Refined> extends pixiChip.Container {
     const load = async () => {
       for (const raw of this._options.source) {
         this._resources.push(await this._options.transform(raw))
-        this._progressBar.value +=
+        this._progressBar.value =
           this._resources.length / this._options.source.length
       }
     }

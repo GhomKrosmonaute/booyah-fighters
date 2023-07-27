@@ -1,21 +1,26 @@
 import * as pixi from "pixi.js"
+import * as booyah from "@ghom/booyah"
 import * as pixiChip from "./pixiChip"
+
+export interface ProgressBarEvents extends booyah.BaseCompositeEvents {
+  updated: [value: number]
+}
 
 export interface ProgressBarOptions {
   startValue: number
   color: number
   width: number
+  height: number
   position: pixi.IPointData
 }
 
-export class ProgressBar extends pixiChip.Container {
+export class ProgressBar extends pixiChip.Container<ProgressBarEvents> {
   /**
    * From 0 to 1.
    * @private
    */
   private _value!: number
-  private _greyBar!: pixi.Graphics
-  private _colorBar!: pixi.Graphics
+  private _bar!: pixi.Graphics
 
   constructor(private _options: ProgressBarOptions) {
     super()
@@ -35,7 +40,19 @@ export class ProgressBar extends pixiChip.Container {
   }
 
   private _update() {
-    this._colorBar.width = this._value * this._options.width
+    this._bar
+      .clear()
+      .beginFill(this._options.color)
+      .drawRoundedRect(
+        0,
+        0,
+        this._options.width * this._value,
+        this._options.height,
+        this._options.height / 2,
+      )
+      .endFill()
+
+    this.emit("updated", this._value)
   }
 
   protected _onActivate() {
@@ -43,17 +60,21 @@ export class ProgressBar extends pixiChip.Container {
 
     this._value = this._options.startValue
 
-    this._greyBar = new pixi.Graphics()
-    this._greyBar.beginFill(0x888888)
-    this._greyBar.drawRect(0, 0, this._options.width, 10)
-    this._greyBar.endFill()
-    this._container.addChild(this._greyBar)
+    this._container.addChild(
+      new pixi.Graphics()
+        .beginFill(0x888888)
+        .drawRoundedRect(
+          0,
+          0,
+          this._options.width,
+          this._options.height,
+          this._options.height / 2,
+        )
+        .endFill(),
+    )
 
-    this._colorBar = new pixi.Graphics()
-    this._colorBar.beginFill(this._options.color)
-    this._colorBar.drawRect(0, 0, this._options.width, 10)
-    this._colorBar.endFill()
-    this._container.addChild(this._colorBar)
+    this._bar = new pixi.Graphics()
+    this._container.addChild(this._bar)
 
     this._update()
   }

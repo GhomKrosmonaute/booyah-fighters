@@ -12,7 +12,6 @@ import * as home from "../pages/home"
 
 import * as loader from "./loader"
 import * as audio from "./audio"
-import * as i18n from "./i18n"
 
 export const gamePages = {
   home: () => new home.Home(),
@@ -31,8 +30,8 @@ export class Game extends booyah.Composite<GameEventNames> {
 
   public fonts!: Record<string, pixi.LoadFontData>
   public images!: Record<keyof typeof images, pixi.Texture>
-  public musics!: Record<string, audio.Music>
-  public sounds!: Record<string, audio.Sound>
+  public musics!: Record<keyof typeof musics, audio.Music>
+  public sounds!: Record<keyof typeof sounds, audio.Sound>
   public texts!: typeof texts
 
   get defaultChildChipContext() {
@@ -46,6 +45,16 @@ export class Game extends booyah.Composite<GameEventNames> {
     console.log("game changePage", page)
   }
 
+  public i18n(key: keyof typeof texts) {
+    let locale = booyah.getLocale(["en", "fr"], "en") as "en"
+
+    if (!this.texts[key][locale]) {
+      locale = "en"
+    }
+
+    return this.texts[key][locale]
+  }
+
   protected _onActivate() {
     this.texts = texts
 
@@ -57,7 +66,7 @@ export class Game extends booyah.Composite<GameEventNames> {
             transform: ([id, path]) =>
               [
                 id,
-                pixi.Texture.from(path, {
+                pixi.Texture.from(path as string, {
                   width: 600,
                   height: 360,
                 }),
@@ -70,27 +79,25 @@ export class Game extends booyah.Composite<GameEventNames> {
             },
           }),
           new loader.Loader({
-            source: musics,
-            transform: (path) => new audio.Music(path),
+            source: Object.entries(musics),
+            transform: ([id, path]) =>
+              [id, new audio.Music(path as string)] as const,
             onLoaded: (resources) => {
-              this.musics = Object.fromEntries(
-                resources.map((resource) => [
-                  musics[resources.indexOf(resource)],
-                  resource,
-                ]),
-              )
+              this.musics = Object.fromEntries(resources) as Record<
+                keyof typeof musics,
+                audio.Music
+              >
             },
           }),
           new loader.Loader({
-            source: sounds,
-            transform: (path) => new audio.Sound(path),
+            source: Object.entries(sounds),
+            transform: ([id, path]) =>
+              [id, new audio.Sound(path as string)] as const,
             onLoaded: (resources) => {
-              this.sounds = Object.fromEntries(
-                resources.map((resource) => [
-                  sounds[resources.indexOf(resource)],
-                  resource,
-                ]),
-              )
+              this.sounds = Object.fromEntries(resources) as Record<
+                keyof typeof sounds,
+                audio.Sound
+              >
             },
           }),
         ]),

@@ -113,7 +113,7 @@ await fs.writeFile(
   ${Array.from(textHandler.elements.values())
     .filter((textPath) => /\.json$/.test(textPath))
     .map((textPath) => {
-      return `  ${path.basename(textPath, path.extname(textPath))}`
+      return `  ...${path.basename(textPath, path.extname(textPath))}`
     })
     .join(",\n")}\n} as const\n\nexport default texts`,
     {
