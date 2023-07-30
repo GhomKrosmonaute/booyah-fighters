@@ -26,7 +26,7 @@ export class Container<
     this._chipContext.container.addChild(this._container)
   }
 
-  public terminate() {
+  public terminate(outputSignal: booyah.Signal = booyah.makeSignal()) {
     this._chipContext.container.removeChild(this._container)
 
     super.terminate()
