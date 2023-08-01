@@ -4,6 +4,7 @@
     "test": "tsc --noEmit",
     "build": "parcel build src/index.html",
     "start": "parcel src/index.html",
+    "resources": "node scripts/resources.js",
     "format": "prettier --write src"
   },
   "type": "module",

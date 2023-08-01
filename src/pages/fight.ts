@@ -78,6 +78,41 @@ class FightTurn extends pixiChip.Container {
   protected _onTerminate() {}
 }
 
+const mulliganActions = {
+  assault: {
+    melee: (ctx) => new MulliganAction(ctx),
+    assassination: (ctx) => new MulliganAction(ctx),
+    special: (ctx) => new MulliganAction(ctx),
+  },
+  defense: {
+    heal: (ctx) => new MulliganAction(ctx),
+    shield: (ctx) => new MulliganAction(ctx),
+    special: (ctx) => new MulliganAction(ctx),
+  },
+  ruse: {
+    rallying: (ctx) => new MulliganAction(ctx),
+    sabotage: (ctx) => new MulliganAction(ctx),
+    special: (ctx) => new MulliganAction(ctx),
+  },
+} satisfies Record<
+  string,
+  Record<string, (ctx: FightContext) => MulliganAction>
+>
+
+type MulliganActionType = keyof typeof mulliganActions
+
+type MulliganActionName = keyof (typeof mulliganActions)[MulliganActionType]
+
+class MulliganAction extends pixiChip.Container {
+  constructor(private _context: FightContext) {
+    super()
+  }
+
+  protected _onActivate() {}
+
+  protected _onTerminate() {}
+}
+
 class Mulligan extends pixiChip.Container {
   constructor(private _context: FightContext) {
     super()
