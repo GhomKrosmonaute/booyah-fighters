@@ -3,9 +3,7 @@ import * as pixiChip from "../entities/pixiChip"
 
 export class Home extends pixiChip.Container {
   protected _onActivate() {
-    const testSprite = new pixi.Sprite(
-      window.game.images["../../resources/images/test.jpg"],
-    )
+    const testSprite = new pixi.Sprite(window.game.images["test.jpg"])
 
     this._container.addChild(testSprite)
 

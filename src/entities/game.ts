@@ -62,6 +62,7 @@ export class Game extends booyah.Composite<GameEventNames> {
       {
         loading: new booyah.Sequence([
           new loader.Loader({
+            id: "images",
             source: Object.entries(images),
             transform: ([id, path]) =>
               [
@@ -79,6 +80,7 @@ export class Game extends booyah.Composite<GameEventNames> {
             },
           }),
           new loader.Loader({
+            id: "musics",
             source: Object.entries(musics),
             transform: ([id, path]) =>
               [id, new audio.Music(path as string)] as const,
@@ -90,6 +92,7 @@ export class Game extends booyah.Composite<GameEventNames> {
             },
           }),
           new loader.Loader({
+            id: "sounds",
             source: Object.entries(sounds),
             transform: ([id, path]) =>
               [id, new audio.Sound(path as string)] as const,

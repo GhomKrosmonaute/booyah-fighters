@@ -70,7 +70,10 @@ async function linkAssets(id, filter) {
       const resolvedPath = path
         .join("..", "..", ...filePath.split(/\\\\/g))
         .replace(/\\/g, "/")
-      return `  "${resolvedPath}": new URL("${resolvedPath}", import.meta.url).href`
+      return `  "${path.relative(
+        "..\\..\\resources\\images",
+        resolvedPath,
+      )}": require("url:${resolvedPath}")`
     })
     .join(",\n")}\n} as const\n\nexport default ${id}`,
       {
