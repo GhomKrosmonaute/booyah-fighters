@@ -7,10 +7,10 @@ declare global {
     game: game.Game
     app: pixi.Application<HTMLCanvasElement>
   }
-}
 
-declare interface ObjectConstructor {
-  keys<T>(object: T): (keyof T)[]
+  interface ObjectConstructor {
+    keys<T>(object: T): (keyof T)[]
+  }
 }
 
 window.app = new pixi.Application({
