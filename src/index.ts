@@ -20,7 +20,3 @@ window.app = new pixi.Application({
 window.game = new game.Game()
 
 document.body.appendChild(window.app.view)
-
-const runner = new booyah.Runner(window.game)
-
-runner.start()
